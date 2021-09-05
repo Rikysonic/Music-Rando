@@ -2,7 +2,12 @@ import os
 import random
 
 #Pair up Field & Fight theme
-field = {0x32:0x33, #Dive into the Heart -Destati- & Fragments of Sorrow
+dotk = [0x3C,0x3D,0x3E] #Darkness of the Unknown
+random.shuffle(dotk)
+field = {dotk[0]:dotk[1],
+         dotk[1]:dotk[2],
+         dotk[2]:dotk[0],
+         0x32:0x33, #Dive into the Heart -Destati- & Fragments of Sorrow
          0x34:0x35, #The Afternoon Streets & Working Together
          0x36:0x37, #Sacred Moon & Deep Drive
          0x40:0x41, #What a Surprise?! & Happy Holidays!
@@ -15,6 +20,7 @@ field = {0x32:0x33, #Dive into the Heart -Destati- & Fragments of Sorrow
          0x7F:0x80, #A Day in Agrabah & Arabian Dream
          0x85:0x86, #Magical Mystery & Working Together
          0x87:0x88, #Space Paranoids & Byte Bashing
+         0x8A:0x8B, #Shipmeister's Shanty & Gearing Up
          0x90:0x95, #This is Halloween & Spooks of Halloween Town
          0x98:0x99, #Reviving Hollow Bastion & Scherzo Di Notte
          0x9A:0x9B, #Nights of the Cursed & He's a Pirate
@@ -31,8 +37,6 @@ musiclist = []
 for file in files:
     musiclist.append(int(file[5:8]))
 #Remove unwanted tracks
-musiclist.remove(0x7C) #Let's Sing & Dance I (Duplicate)
-musiclist.remove(0x7D) #Let's Sing & Dance III (No Loop)
 musiclist.remove(0x84) #Beauty and the Beast (No Loop)
 
 #Shuffle tracks
