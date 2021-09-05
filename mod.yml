@@ -2,384 +2,392 @@ assets:
 - name: bgm/music050.bgm
   method: copy
   source:
-  - name: bgm/music063.bgm
+  - name: bgm/music123.bgm
 - name: bgm/music051.bgm
   method: copy
   source:
-  - name: bgm/music063.bgm
+  - name: bgm/music122.bgm
 - name: bgm/music052.bgm
   method: copy
   source:
-  - name: bgm/music137.bgm
+  - name: bgm/music116.bgm
 - name: bgm/music053.bgm
   method: copy
   source:
-  - name: bgm/music137.bgm
+  - name: bgm/music112.bgm
 - name: bgm/music054.bgm
   method: copy
   source:
-  - name: bgm/music111.bgm
+  - name: bgm/music189.bgm
 - name: bgm/music055.bgm
   method: copy
   source:
-  - name: bgm/music111.bgm
+  - name: bgm/music190.bgm
 - name: bgm/music059.bgm
   method: copy
   source:
-  - name: bgm/music190.bgm
+  - name: bgm/music188.bgm
 - name: bgm/music060.bgm
   method: copy
   source:
-  - name: bgm/music129.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music061.bgm
   method: copy
   source:
-  - name: bgm/music084.bgm
+  - name: bgm/music065.bgm
 - name: bgm/music062.bgm
   method: copy
   source:
-  - name: bgm/music107.bgm
+  - name: bgm/music137.bgm
 - name: bgm/music063.bgm
   method: copy
   source:
-  - name: bgm/music065.bgm
+  - name: bgm/music104.bgm
 - name: bgm/music064.bgm
   method: copy
   source:
-  - name: bgm/music119.bgm
+  - name: bgm/music128.bgm
 - name: bgm/music065.bgm
   method: copy
   source:
-  - name: bgm/music118.bgm
+  - name: bgm/music127.bgm
 - name: bgm/music066.bgm
   method: copy
   source:
-  - name: bgm/music094.bgm
+  - name: bgm/music110.bgm
 - name: bgm/music067.bgm
   method: copy
   source:
-  - name: bgm/music087.bgm
+  - name: bgm/music187.bgm
 - name: bgm/music068.bgm
   method: copy
   source:
-  - name: bgm/music061.bgm
+  - name: bgm/music051.bgm
 - name: bgm/music069.bgm
   method: copy
   source:
-  - name: bgm/music061.bgm
+  - name: bgm/music050.bgm
 - name: bgm/music081.bgm
   method: copy
   source:
-  - name: bgm/music142.bgm
+  - name: bgm/music108.bgm
 - name: bgm/music082.bgm
   method: copy
   source:
-  - name: bgm/music050.bgm
+  - name: bgm/music064.bgm
 - name: bgm/music084.bgm
   method: copy
   source:
-  - name: bgm/music121.bgm
+  - name: bgm/music096.bgm
 - name: bgm/music085.bgm
   method: copy
   source:
-  - name: bgm/music054.bgm
+  - name: bgm/music114.bgm
 - name: bgm/music087.bgm
   method: copy
   source:
-  - name: bgm/music134.bgm
+  - name: bgm/music106.bgm
 - name: bgm/music088.bgm
   method: copy
   source:
-  - name: bgm/music082.bgm
+  - name: bgm/music103.bgm
 - name: bgm/music089.bgm
   method: copy
   source:
-  - name: bgm/music188.bgm
+  - name: bgm/music131.bgm
 - name: bgm/music090.bgm
   method: copy
   source:
-  - name: bgm/music123.bgm
+  - name: bgm/music062.bgm
 - name: bgm/music091.bgm
   method: copy
   source:
-  - name: bgm/music139.bgm
+  - name: bgm/music107.bgm
 - name: bgm/music092.bgm
   method: copy
   source:
-  - name: bgm/music103.bgm
+  - name: bgm/music141.bgm
 - name: bgm/music093.bgm
   method: copy
   source:
-  - name: bgm/music135.bgm
+  - name: bgm/music054.bgm
 - name: bgm/music094.bgm
   method: copy
   source:
-  - name: bgm/music053.bgm
+  - name: bgm/music138.bgm
 - name: bgm/music095.bgm
   method: copy
   source:
-  - name: bgm/music153.bgm
+  - name: bgm/music159.bgm
 - name: bgm/music096.bgm
   method: copy
   source:
-  - name: bgm/music085.bgm
+  - name: bgm/music089.bgm
 - name: bgm/music097.bgm
   method: copy
   source:
-  - name: bgm/music143.bgm
+  - name: bgm/music090.bgm
 - name: bgm/music098.bgm
   method: copy
   source:
-  - name: bgm/music128.bgm
+  - name: bgm/music156.bgm
 - name: bgm/music099.bgm
   method: copy
   source:
-  - name: bgm/music093.bgm
+  - name: bgm/music118.bgm
 - name: bgm/music100.bgm
   method: copy
   source:
-  - name: bgm/music091.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music101.bgm
   method: copy
   source:
-  - name: bgm/music116.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music102.bgm
   method: copy
   source:
-  - name: bgm/music091.bgm
+  - name: bgm/music094.bgm
 - name: bgm/music103.bgm
   method: copy
   source:
-  - name: bgm/music144.bgm
+  - name: bgm/music135.bgm
 - name: bgm/music104.bgm
   method: copy
   source:
-  - name: bgm/music112.bgm
+  - name: bgm/music059.bgm
 - name: bgm/music106.bgm
   method: copy
   source:
-  - name: bgm/music051.bgm
+  - name: bgm/music130.bgm
 - name: bgm/music107.bgm
   method: copy
   source:
-  - name: bgm/music145.bgm
+  - name: bgm/music185.bgm
 - name: bgm/music108.bgm
   method: copy
   source:
-  - name: bgm/music148.bgm
+  - name: bgm/music164.bgm
 - name: bgm/music109.bgm
   method: copy
   source:
-  - name: bgm/music159.bgm
+  - name: bgm/music136.bgm
 - name: bgm/music110.bgm
   method: copy
   source:
-  - name: bgm/music099.bgm
+  - name: bgm/music093.bgm
 - name: bgm/music111.bgm
   method: copy
   source:
-  - name: bgm/music104.bgm
+  - name: bgm/music143.bgm
 - name: bgm/music112.bgm
   method: copy
   source:
-  - name: bgm/music081.bgm
+  - name: bgm/music163.bgm
 - name: bgm/music113.bgm
   method: copy
   source:
-  - name: bgm/music059.bgm
+  - name: bgm/music052.bgm
 - name: bgm/music114.bgm
   method: copy
   source:
-  - name: bgm/music136.bgm
+  - name: bgm/music081.bgm
 - name: bgm/music115.bgm
   method: copy
   source:
-  - name: bgm/music052.bgm
+  - name: bgm/music119.bgm
 - name: bgm/music116.bgm
   method: copy
   source:
-  - name: bgm/music081.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music117.bgm
   method: copy
   source:
-  - name: bgm/music095.bgm
+  - name: bgm/music140.bgm
 - name: bgm/music118.bgm
   method: copy
   source:
-  - name: bgm/music186.bgm
+  - name: bgm/music153.bgm
 - name: bgm/music119.bgm
   method: copy
   source:
-  - name: bgm/music187.bgm
+  - name: bgm/music152.bgm
 - name: bgm/music120.bgm
   method: copy
   source:
-  - name: bgm/music117.bgm
+  - name: bgm/music102.bgm
 - name: bgm/music121.bgm
   method: copy
   source:
-  - name: bgm/music147.bgm
+  - name: bgm/music082.bgm
 - name: bgm/music122.bgm
   method: copy
   source:
-  - name: bgm/music069.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music123.bgm
   method: copy
   source:
-  - name: bgm/music068.bgm
+  - name: bgm/music129.bgm
 - name: bgm/music127.bgm
   method: copy
   source:
-  - name: bgm/music150.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music128.bgm
   method: copy
   source:
-  - name: bgm/music150.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music129.bgm
   method: copy
   source:
-  - name: bgm/music066.bgm
+  - name: bgm/music145.bgm
 - name: bgm/music130.bgm
   method: copy
   source:
-  - name: bgm/music146.bgm
+  - name: bgm/music142.bgm
 - name: bgm/music131.bgm
   method: copy
   source:
-  - name: bgm/music106.bgm
+  - name: bgm/music095.bgm
 - name: bgm/music133.bgm
   method: copy
   source:
-  - name: bgm/music110.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music134.bgm
   method: copy
   source:
-  - name: bgm/music110.bgm
+  - name: bgm/music117.bgm
 - name: bgm/music135.bgm
   method: copy
   source:
-  - name: bgm/music130.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music136.bgm
   method: copy
   source:
-  - name: bgm/music130.bgm
+  - name: bgm/music088.bgm
 - name: bgm/music137.bgm
   method: copy
   source:
-  - name: bgm/music113.bgm
+  - name: bgm/music097.bgm
 - name: bgm/music138.bgm
   method: copy
   source:
-  - name: bgm/music138.bgm
+  - name: bgm/music134.bgm
 - name: bgm/music139.bgm
   method: copy
   source:
-  - name: bgm/music149.bgm
+  - name: bgm/music133.bgm
 - name: bgm/music140.bgm
   method: copy
   source:
-  - name: bgm/music055.bgm
+  - name: bgm/music085.bgm
 - name: bgm/music141.bgm
   method: copy
   source:
-  - name: bgm/music140.bgm
+  - name: bgm/music186.bgm
 - name: bgm/music142.bgm
   method: copy
   source:
-  - name: bgm/music062.bgm
+  - name: bgm/music084.bgm
 - name: bgm/music143.bgm
   method: copy
   source:
-  - name: bgm/music158.bgm
+  - name: bgm/music098.bgm
 - name: bgm/music144.bgm
   method: copy
   source:
-  - name: bgm/music092.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music145.bgm
   method: copy
   source:
-  - name: bgm/music102.bgm
+  - name: bgm/music055.bgm
 - name: bgm/music146.bgm
   method: copy
   source:
-  - name: bgm/music189.bgm
+  - name: bgm/music101.bgm
 - name: bgm/music147.bgm
   method: copy
   source:
-  - name: bgm/music089.bgm
+  - name: bgm/music063.bgm
 - name: bgm/music148.bgm
   method: copy
   source:
-  - name: bgm/music090.bgm
+  - name: bgm/music113.bgm
 - name: bgm/music149.bgm
   method: copy
   source:
-  - name: bgm/music092.bgm
+  - name: bgm/music150.bgm
 - name: bgm/music150.bgm
   method: copy
   source:
-  - name: bgm/music064.bgm
+  - name: bgm/music115.bgm
 - name: bgm/music151.bgm
   method: copy
   source:
-  - name: bgm/music133.bgm
+  - name: bgm/music099.bgm
 - name: bgm/music152.bgm
   method: copy
   source:
-  - name: bgm/music108.bgm
+  - name: bgm/music155.bgm
 - name: bgm/music153.bgm
   method: copy
   source:
-  - name: bgm/music108.bgm
+  - name: bgm/music154.bgm
 - name: bgm/music154.bgm
   method: copy
   source:
-  - name: bgm/music164.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music155.bgm
   method: copy
   source:
-  - name: bgm/music164.bgm
+  - name: bgm/music151.bgm
 - name: bgm/music156.bgm
   method: copy
   source:
-  - name: bgm/music096.bgm
+  - name: bgm/music111.bgm
 - name: bgm/music158.bgm
   method: copy
   source:
-  - name: bgm/music101.bgm
+  - name: bgm/music067.bgm
 - name: bgm/music159.bgm
   method: copy
   source:
-  - name: bgm/music156.bgm
+  - name: bgm/music121.bgm
 - name: bgm/music163.bgm
   method: copy
   source:
-  - name: bgm/music122.bgm
+  - name: bgm/music092.bgm
 - name: bgm/music164.bgm
   method: copy
   source:
-  - name: bgm/music067.bgm
+  - name: bgm/music061.bgm
 - name: bgm/music185.bgm
   method: copy
   source:
-  - name: bgm/music151.bgm
+  - name: bgm/music053.bgm
 - name: bgm/music186.bgm
   method: copy
   source:
-  - name: bgm/music098.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music187.bgm
   method: copy
   source:
-  - name: bgm/music098.bgm
+  - name: bgm/music091.bgm
 - name: bgm/music188.bgm
   method: copy
   source:
-  - name: bgm/music127.bgm
+  - name: bgm/music068.bgm
 - name: bgm/music189.bgm
   method: copy
   source:
-  - name: bgm/music088.bgm
+  - name: bgm/music146.bgm
 - name: bgm/music190.bgm
   method: copy
   source:
-  - name: bgm/music088.bgm
+  - name: bgm/music148.bgm
+- name: 03system.bin
+  method: binarc
+  source:
+  - name: arif
+    type: list
+    method: copy
+    source:
+    - name: arif.bin
