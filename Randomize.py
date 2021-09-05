@@ -79,12 +79,13 @@ f.write('  - name: arif\n    type: list\n    method: copy\n    source:\n')
 f.write('    - name: arif.bin')
 f.close()
 data = open(currentDir+'arifbackup.bin','rb').read()
+data = bytearray(data)
 for i in range(0x64,0x5865,0x40):
     for j in range(0,0x10,2):
         x = data[i+j]
         if x == 0:
             continue
-        else:
+        elif x in tobereplaced:
             try:
                 data[i+j] = field[x]
             except:
