@@ -1,4 +1,4 @@
-# Command-Menu-Randomizer
+# Music-Randomizer
 A mod for the OpenKH Mod Manager that randomizes the KH2 Music
 
 ## How to use:
