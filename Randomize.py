@@ -12,7 +12,7 @@ field = {0x32:0x33, #Dive into the Heart -Destati- & Fragments of Sorrow
          0x65:0x68, #Waltz of the Damned & Dance of the Daring
          0x74:0x70, #The Home of Dragons & Fields of Honor
          0x76:0x77, #Lazy Afternoons & Sinister Sundowns
-         0x7A:0x7B, #Let's Sing and Dance! I & Let's Sing and Dance! II
+         #0x7A:0x7B, #Let's Sing and Dance! I & Let's Sing and Dance! II
          0x7F:0x80, #A Day in Agrabah & Arabian Dream
          0x85:0x86, #Magical Mystery & Working Together
          0x87:0x88, #Space Paranoids & Byte Bashing
