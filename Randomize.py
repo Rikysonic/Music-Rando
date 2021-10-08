@@ -3,6 +3,53 @@ import random
 
 # import sys
 
+to_be_replaced = []
+random_list = []
+
+
+def roll_seed():
+    global to_be_replaced, random_list
+    # Shuffle tracks
+    random_list = music_list.copy()
+    random.shuffle(random_list)
+    # Ensure Field & Fight tracks are grouped together
+    to_be_replaced = []  # Fields to be deleted in arif
+    for fight_old in fight:
+        field_old = fight[fight_old]
+        index_field = music_list.index(field_old)
+        index_fight = music_list.index(fight_old)
+        field_new = random_list[index_field]
+        fight_new = random_list[index_fight]
+        paired = False
+        # Find out where the pair is located
+        try:
+            paired = field[fight_new]
+        except:
+            try:
+                paired = fight[fight_new]
+            except:
+                pass
+        if paired:  # Swap the field with the pair tracks
+            index_paired = random_list.index(paired)
+            random_list[index_field], random_list[index_paired] = paired, field_new
+        else:  # Swap fight with field and flag fight_old to be removed
+            random_list[index_field], random_list[index_fight] = fight_new, field_new
+            to_be_replaced.append(fight_old)
+    # Validate shuffled list
+    print(to_be_replaced)
+    for old in to_be_replaced:
+        # new = 0x92  # Roxas theme is 2nd lowest filesize
+        # Link both the field and the fight track to the same bgm file
+        field_old = fight[old]
+        index_field = music_list.index(field_old)
+        new = random_list[index_field]
+        if new in problematic_songs:
+            print(f"Problematic song found! -> {new}, rolling new seed...")
+            # new = 0x92  # Roxas theme is 2nd lowest filesize
+            return False
+    return True
+
+
 # Pair up Field & Fight theme
 field = {
     0x32: 0x33,  # Dive into the Heart -Destati- & Fragments of Sorrow
@@ -30,6 +77,17 @@ fight = {}  # Basically reverse of pairs
 for i in field:
     fight[field[i]] = i
 
+problematic_songs = [
+    0x6B,
+    0x3D,
+    0x9C,
+    0xB9,
+    0x57,
+    0x3B,
+    0x43,
+    0x6A
+]
+
 # Get music ID
 current_dir = os.path.realpath(__file__).replace(os.path.basename(__file__), '')
 # current_dir = os.path.dirname(sys.executable) + "\\"
@@ -38,35 +96,10 @@ music_list = []
 for file in files:
     music_list.append(int(file[5:8]))
 
-# Shuffle tracks
-random_list = music_list.copy()
-random.shuffle(random_list)
+valid = False
+while not valid:
+    valid = roll_seed()
 
-# Ensure Field & Fight tracks are grouped together
-to_be_replaced = []  # Fields to be deleted in arif
-for fight_old in fight:
-    field_old = fight[fight_old]
-    index_field = music_list.index(field_old)
-    index_fight = music_list.index(fight_old)
-    field_new = random_list[index_field]
-    fight_new = random_list[index_fight]
-    paired = False
-    # Find out where the pair is located
-    try:
-        paired = field[fight_new]
-    except:
-        try:
-            paired = fight[fight_new]
-        except:
-            pass
-    if paired:  # Swap the field with the pair tracks
-        index_paired = random_list.index(paired)
-        random_list[index_field], random_list[index_paired] = paired, field_new
-    else:  # Swap fight with field and flag fight_old to be removed
-        random_list[index_field], random_list[index_fight] = fight_new, field_new
-        to_be_replaced.append(fight_old)
-
-print(to_be_replaced)
 # Write the mod.yml
 f = open(current_dir + 'mod.yml', 'w')
 f.write('assets:\n')
