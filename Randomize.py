@@ -3,6 +3,8 @@ import random
 
 # import sys
 
+# goa_type = 1  # Represents the GoA type, 1 for original PNACH, 2 for modded PNACH + Lua for Music-Rando fix
+goa_type = 1  # Represents the GoA type, 1 for original PNACH, 2 for DARKNESS
 to_be_replaced = []
 random_list = []
 
@@ -32,9 +34,17 @@ def roll_seed():
         if paired:  # Swap the field with the pair tracks
             index_paired = random_list.index(paired)
             random_list[index_field], random_list[index_paired] = paired, field_new
-        else:  # Swap fight with field and flag fight_old to be removed
+        else:
+            if goa_type == 1:  # If classic rando, then TT/STT cannot be in to_be_replaced
+                if fight_old in [0x35, 0x77]:  # Re-roll seed if trying to set single track to TT/STT
+                    print("TT/STT is a single track! Rolling new seed...")
+                    return False
+            # Swap fight with field and flag fight_old to be removed
             random_list[index_field], random_list[index_fight] = fight_new, field_new
             to_be_replaced.append(fight_old)
+    # Exit here if DARKNESS is selected
+    if goa_type == 2:
+        return True
     # Validate shuffled list
     print(to_be_replaced)
     for old in to_be_replaced:
@@ -96,6 +106,18 @@ music_list = []
 for file in files:
     music_list.append(int(file[5:8]))
 
+print("Select the desired option:")
+print("1) Generate new music rando")
+print("2) Generate DARKNESS")
+print("3) Exit\n")
+while True:
+    goa_type = int(input("Input number: "))
+    if goa_type in [1, 2]:
+        break
+    if goa_type == 3:
+        exit(0)
+    print("Input not valid.\n")
+
 valid = False
 while not valid:
     valid = roll_seed()
@@ -105,7 +127,13 @@ f = open(current_dir + 'mod.yml', 'w')
 f.write('assets:\n')
 for i in range(len(music_list)):
     old = music_list[i]
-    if old in to_be_replaced:
+    if goa_type == 2:
+        # Replace EVERY SONG IN THE GAME with DARKNESS OF THE UNKNOWN I except DARKNESS OF THE UNKNOWN III
+        if old == 0x3E:
+            new = 0x3E
+        else:
+            new = 0x3C
+    elif old in to_be_replaced:
         # new = 0x92  # Roxas theme is 2nd lowest filesize
         # Link both the field and the fight track to the same bgm file
         field_old = fight[old]
@@ -129,7 +157,8 @@ for i in range(0x64, 0x5865, 0x40):
         x = data[i + j]
         if x == 0:
             continue
-        elif x in to_be_replaced:
+        # If DARNESS, replace every fight occurrence with the field except the Final Fight
+        elif (goa_type == 2 and x != 0x3E and x in fight) or (x in to_be_replaced):
             data[i + j] = fight[x]
 f = open(current_dir + 'arif.bin', 'wb')
 f.write(data)
