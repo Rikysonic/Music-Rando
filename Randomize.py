@@ -1,7 +1,6 @@
 import os
 import random
-
-# import sys
+import sys
 
 # goa_type = 1  # Represents the GoA type, 1 for original PNACH, 2 for modded PNACH + Lua for Music-Rando fix
 goa_type = 1  # Represents the GoA type, 1 for original PNACH, 2 for DARKNESS
@@ -115,7 +114,7 @@ while True:
     if goa_type in [1, 2]:
         break
     if goa_type == 3:
-        exit(0)
+        sys.exit(0)
     print("Input not valid.\n")
 
 valid = False
