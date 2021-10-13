@@ -2,10 +2,10 @@ import os
 import random
 import sys
 
-# goa_type = 1  # Represents the GoA type, 1 for original PNACH, 2 for modded PNACH + Lua for Music-Rando fix
-goa_type = 1  # Represents the GoA type, 1 for original PNACH, 2 for DARKNESS
+goa_type = 1  # Represents the GoA type, 1 for new rando, 2 for DARKNESS mode, 3 for Relaxed Mermaid mode
 to_be_replaced = []
 random_list = []
+current_dir = ""
 
 
 def roll_seed():
@@ -15,6 +15,9 @@ def roll_seed():
     random.shuffle(random_list)
     # Ensure Field & Fight tracks are grouped together
     to_be_replaced = []  # Fields to be deleted in arif
+    # Exit here if DARKNESS or Relaxed Mermaid is selected
+    if goa_type in [2, 3]:
+        return True
     for fight_old in fight:
         field_old = fight[fight_old]
         index_field = music_list.index(field_old)
@@ -34,27 +37,21 @@ def roll_seed():
             index_paired = random_list.index(paired)
             random_list[index_field], random_list[index_paired] = paired, field_new
         else:
-            if goa_type == 1:  # If classic rando, then TT/STT cannot be in to_be_replaced
-                if fight_old in [0x35, 0x77]:  # Re-roll seed if trying to set single track to TT/STT
-                    print("TT/STT is a single track! Rolling new seed...")
-                    return False
+            # Due to how GoA PNACH forces music, TT/STT cannot have an event track
+            if fight_old in [0x35, 0x77]:  # Re-roll seed if trying to set single track to TT/STT
+                print("TT/STT is a single track! Rolling new seed...")
+                return False
             # Swap fight with field and flag fight_old to be removed
             random_list[index_field], random_list[index_fight] = fight_new, field_new
             to_be_replaced.append(fight_old)
-    # Exit here if DARKNESS is selected
-    if goa_type == 2:
-        return True
     # Validate shuffled list
-    print(to_be_replaced)
     for old in to_be_replaced:
-        # new = 0x92  # Roxas theme is 2nd lowest filesize
         # Link both the field and the fight track to the same bgm file
         field_old = fight[old]
         index_field = music_list.index(field_old)
         new = random_list[index_field]
-        if new in problematic_songs:
-            print(f"Problematic song found! -> {new}, rolling new seed...")
-            # new = 0x92  # Roxas theme is 2nd lowest filesize
+        if new in problematic_tracks:
+            print(f"Problematic track found! -> {new}, rolling new seed...")
             return False
     return True
 
@@ -86,35 +83,43 @@ fight = {}  # Basically reverse of pairs
 for i in field:
     fight[field[i]] = i
 
-problematic_songs = [
-    0x6B,
-    0x3D,
-    0x9C,
-    0xB9,
-    0x57,
-    0x3B,
-    0x43,
-    0x6A
+problematic_tracks = [
+    0x6B,  # Ursula's Revenge
+    0x3D,  # Darkness of the Unknown II
+    0x9C,  # Guardando nel buio (KH I)
+    0xB9,  # The 13th Dilemma
+    0x57,  # Disappeared
+    0x3B,  # A Fight to the Death
+    0x43,  # Rage Awakened
+    0x6A  # Under the Sea
 ]
 
 # Get music ID
-current_dir = os.path.realpath(__file__).replace(os.path.basename(__file__), '')
-# current_dir = os.path.dirname(sys.executable) + "\\"
-files = os.listdir(current_dir + 'bgm')
+# determine if application is a script file or frozen exe
+if getattr(sys, 'frozen', False):
+    current_dir = f"{os.path.dirname(sys.executable)}"
+elif __file__:
+    current_dir = f"{os.path.dirname(__file__)}"
+
+files = os.listdir(f"{current_dir}/bgm")
 music_list = []
 for file in files:
     music_list.append(int(file[5:8]))
 
 print("Select the desired option:")
 print("1) Generate new music rando")
-print("2) Generate DARKNESS")
-print("3) Exit\n")
+print("2) DARKNESS MODE")
+print("3) Relaxed Mermaid Mode")
+print("4) Exit\n")
 while True:
-    goa_type = int(input("Input number: "))
-    if goa_type in [1, 2]:
-        break
-    if goa_type == 3:
-        sys.exit(0)
+    try:
+        goa_type = int(input("Input number: "))
+        if goa_type in [1, 2, 3]:
+            break
+        if goa_type == 4:
+            sys.exit(0)
+    except ValueError:
+        pass
     print("Input not valid.\n")
 
 valid = False
@@ -122,16 +127,19 @@ while not valid:
     valid = roll_seed()
 
 # Write the mod.yml
-f = open(current_dir + 'mod.yml', 'w')
+f = open(f"{current_dir}/mod.yml", 'w')
 f.write('assets:\n')
 for i in range(len(music_list)):
     old = music_list[i]
     if goa_type == 2:
-        # Replace EVERY SONG IN THE GAME with DARKNESS OF THE UNKNOWN I except DARKNESS OF THE UNKNOWN III
+        # Replace EVERY TRACK IN THE GAME with DARKNESS OF THE UNKNOWN I except DARKNESS OF THE UNKNOWN III
         if old == 0x3E:
             new = 0x3E
         else:
             new = 0x3C
+    elif goa_type == 3:
+        # Replace EVERY TRACK IN THE GAME with Isn't it Lovely?
+        new = 0x81
     elif old in to_be_replaced:
         # new = 0x92  # Roxas theme is 2nd lowest filesize
         # Link both the field and the fight track to the same bgm file
@@ -149,16 +157,17 @@ f.write('- name: 03system.bin\n  method: binarc\n  source:\n')
 f.write('  - name: arif\n    type: list\n    method: copy\n    source:\n')
 f.write('    - name: arif.bin')
 f.close()
-data = open(current_dir + 'arifbackup.bin', 'rb').read()
+data = open(f"{current_dir}/arifbackup.bin", 'rb').read()
 data = bytearray(data)
 for i in range(0x64, 0x5865, 0x40):
     for j in range(0, 0x10, 2):
         x = data[i + j]
         if x == 0:
             continue
-        # If DARNESS, replace every fight occurrence with the field except the Final Fight
-        elif (goa_type == 2 and x != 0x3E and x in fight) or (x in to_be_replaced):
+        # If DARKNESS, replace every fight occurrence with the field except the Final Fight
+        # If Relaxed Mermaid, always replace
+        elif (goa_type == 2 and x in fight and x != 0x3E) or (goa_type == 3 and x in fight) or (x in to_be_replaced):
             data[i + j] = fight[x]
-f = open(current_dir + 'arif.bin', 'wb')
+f = open(f"{current_dir}/arif.bin", 'wb')
 f.write(data)
 f.close()
