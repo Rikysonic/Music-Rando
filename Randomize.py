@@ -41,17 +41,20 @@ def roll_seed():
             if fight_old in [0x35, 0x77]:  # Re-roll seed if trying to set single track to TT/STT
                 print("TT/STT is a single track! Rolling new seed...")
                 return False
+            # Check if fight_new is one of the problematic tracks
+            if fight_new in problematic_tracks:
+                print(f"[World music] Problematic track found! -> {fight_new}, rolling new seed...")
+                return False
             # Swap fight with field and flag fight_old to be removed
             random_list[index_field], random_list[index_fight] = fight_new, field_new
             to_be_replaced.append(fight_old)
-    # Validate shuffled list
-    for old in to_be_replaced:
-        # Link both the field and the fight track to the same bgm file
-        field_old = fight[old]
-        index_field = music_list.index(field_old)
-        new = random_list[index_field]
+    # Check for problematic tracks set to GoA custom tracks
+    goa_custom_tracks = [0x72]  # Tension Rising is set to play in Old Mansion forced fights during TT3
+    for old in goa_custom_tracks:
+        index_old = music_list.index(old)
+        new = random_list[index_old]
         if new in problematic_tracks:
-            print(f"Problematic track found! -> {new}, rolling new seed...")
+            print(f"[GoA Mod custom music] Problematic track found! -> {new}, rolling new seed...")
             return False
     return True
 
@@ -83,6 +86,7 @@ fight = {}  # Basically reverse of pairs
 for i in field:
     fight[field[i]] = i
 
+# These are the biggest tracks in the game and cannot be assigned to any world music and some GoA custom music
 problematic_tracks = [
     0x6B,  # Ursula's Revenge
     0x3D,  # Darkness of the Unknown II
@@ -141,8 +145,7 @@ for i in range(len(music_list)):
         # Replace EVERY TRACK IN THE GAME with Isn't it Lovely?
         new = 0x81
     elif old in to_be_replaced:
-        # new = 0x92  # Roxas theme is 2nd lowest filesize
-        # Link both the field and the fight track to the same bgm file
+        # Set the fight track to be a copy of the corresponding new field track
         field_old = fight[old]
         index_field = music_list.index(field_old)
         new = random_list[index_field]
