@@ -1,13 +1,16 @@
 import os
 import random
+import shutil
 import sys
 from glob import glob
 
-goa_type = 1  # Represents the GoA type, 1 or 2 for new rando, 3 to 6 for meme-y runs
+goa_type = 1  # Represents the GoA type, 1 for a new rando, 2 to 6 for meme-y runs
 to_be_replaced = []
 random_list = []
 current_dir = ""
 kh1_mode = False
+ffx_mode = False
+meme_copied = False
 
 
 def roll_seed():
@@ -17,8 +20,8 @@ def roll_seed():
     random.shuffle(random_list)
     # Ensure Field & Fight tracks are grouped together
     to_be_replaced = []  # Fields to be deleted in arif
-    # Exit here if DARKNESS, DARKNESS - KH1 Edition, Relaxed Mermaid or Traverse Town is selected
-    if goa_type in range(3, 7):
+    # Exit here if DARKNESS, DARKNESS - KH1 Edition, Relaxed Mermaid, Traverse Town, or In Zanarkand is selected
+    if goa_type in range(2, 7):
         return True
     for fight_old in fight:
         field_old = fight[fight_old]
@@ -59,6 +62,30 @@ def roll_seed():
             print(f"[GoA Mod custom music] Problematic track found! -> {new}, rolling new seed...")
             return False
     return True
+
+
+def yes_no(question):
+    while True:
+        try:
+            answer = input(f"{question} [y/n]: ")
+            if answer == "y" or answer == "yes":
+                return True
+            elif answer == "n" or answer == "no":
+                return False
+        except ValueError:
+            pass
+        print("Input not valid.\n")
+
+
+def copy_all_files(src, dst):
+    # fetch all files
+    for file_name in os.listdir(src):
+        # construct full file path
+        source = os.path.join(src, file_name)
+        destination = os.path.join(dst, file_name)
+        # copy only files
+        if os.path.isfile(source):
+            shutil.copy(source, destination)
 
 
 # Pair up Field & Fight theme
@@ -112,7 +139,15 @@ problematic_tracks = [
     # 0x163,  # Disappeared (removed from bgm folder)
     0x1B9,  # Forze Del Male
     0x161,  # Disappeared (No Intro)
-    0x1C2  # Guardando Nel Buio (No Intro)
+    0x1C2,  # Guardando Nel Buio (No Intro)
+    # FFX Songs
+    0x2B5,  # Assault
+    0x232,  # Decisive Battle
+    0x2B0,  # Aeon Battle
+    0x21B,  # Blitz Off
+    0x22A,  # Seymour Battle
+    0x291,  # Challenge
+    0x281  # The Splendid Performance
 ]
 
 # Get music ID
@@ -121,6 +156,48 @@ if getattr(sys, 'frozen', False):
     current_dir = f"{os.path.dirname(sys.executable)}"
 elif __file__:
     current_dir = f"{os.path.dirname(__file__)}"
+
+print("Select the desired option:")
+print("1) Generate new music rando...")
+print("2) DARKNESS MODE")
+print("3) DARKNESS MODE - KH1 Edition")
+print("4) Relaxed Mermaid Mode")
+print("5) I Love Traverse Town!")
+print("6) In Zanarkand Everywhere You Go")
+print("7) Exit\n")
+while True:
+    try:
+        goa_type = int(input("Input number: "))
+        if goa_type in range(2, 7):
+            break
+        if goa_type == 1:
+            kh1_mode = yes_no("Do you want KH1 songs in the rando?")
+            ffx_mode = yes_no("Do you want FFX songs in the rando?")
+            break
+        elif goa_type == 7:
+            print("Exited!")
+            sys.exit(0)
+    except ValueError:
+        pass
+    print("Input not valid.\n")
+
+# Create bgm folder
+if os.path.exists("bgm"):
+    shutil.rmtree("bgm")
+os.makedirs("bgm")
+
+# Copy all KH2 songs
+copy_all_files(f"{current_dir}/kh2", f"{current_dir}/bgm")
+
+# Copy all KH1 songs and add the KH1 field/fight pairs to global field/fight dictionary if KH1 was selected
+if kh1_mode:
+    copy_all_files(f"{current_dir}/kh1", f"{current_dir}/bgm")
+    fight.update(kh1_fight)
+    field.update(kh1_field)
+
+# Copy all FFX songs and add the FFX field/fight pairs to global field/fight dictionary if FFX was selected
+if ffx_mode:
+    copy_all_files(f"{current_dir}/ffx", f"{current_dir}/bgm")
 
 files = glob(f"{current_dir}/bgm/*.bgm")
 music_list = []
@@ -134,61 +211,61 @@ wd_list = []
 for file in files:
     wd_list.append(os.path.basename(file))
 
-print("Select the desired option:")
-print("1) Generate new music rando (KH2-only tracks)")
-print("2) Generate new music rando (KH2 + KH1 tracks)")
-print("3) DARKNESS MODE")
-print("4) DARKNESS MODE - KH1 Edition")
-print("5) Relaxed Mermaid Mode")
-print("6) I Love Traverse Town!")
-print("7) Exit\n")
-while True:
-    try:
-        goa_type = int(input("Input number: "))
-        if goa_type in range(1, 7):
-            break
-        elif goa_type == 7:
-            print("Exited!")
-            sys.exit(0)
-    except ValueError:
-        pass
-    print("Input not valid.\n")
-
-# Set kh1_mode to True if KH2 + KH1 was selected
-if goa_type == 2:
-    kh1_mode = True
-
-# If kh1_mode, then add the KH1 field/fight pairs to global field/fight dictionary
-if kh1_mode:
-    fight.update(kh1_fight)
-    field.update(kh1_field)
-else:  # Otherwise, remove every KH1 songs from music_list
-    music_list = [x for x in music_list if x <= 200]  # KH2 songs number limit is 190, every greater number is from KH1
-
 valid = False
 while not valid:
     valid = roll_seed()
 
 # Write the mod.yml
 f = open(f"{current_dir}/mod.yml", 'w')
+f.write('''title: Music-Rando (now with KH1 and FFX music!)
+originalAuthor: Rikysonic (original repo by Num), big thanks to Necrofitz for working on FFX music and helping a lot on\
+ brainstorming and testing critical music combinations
+game: kh2
+description: A Music Randomizer for KH2. It supports KH2, KH1 and FFX music. Make sure to run Randomizer.exe in openkh/\
+mods/Rikysonic/Music-Rando to generate a new rando.
+''')
 f.write('assets:\n')
 for i in range(len(music_list)):
     old = music_list[i]
-    if goa_type == 3:
+    if goa_type == 2:
         # Replace EVERY TRACK IN THE GAME with DARKNESS OF THE UNKNOWN I except DARKNESS OF THE UNKNOWN III
         if old == 0x3E:
             new = 0x3E
         else:
             new = 0x3C
-    elif goa_type == 4:
+    elif goa_type == 3:
+        # Copy meme song to bgm
+        if not meme_copied:
+            shutil.copy(f"{current_dir}/kh1/music387.bgm", f"{current_dir}/bgm/music387.bgm")
+            music_list.append(387)
+            shutil.copy(f"{current_dir}/kh1/wave0387.wd", f"{current_dir}/bgm/wave0387.wd")
+            wd_list.append("wave0387.wd")
+            meme_copied = True
         # Replace EVERY TRACK IN THE GAME with Night of Fate from KH1
         new = 0x183
-    elif goa_type == 5:
+    elif goa_type == 4:
         # Replace EVERY TRACK IN THE GAME with Isn't it Lovely?
         new = 0x81
-    elif goa_type == 6:
+    elif goa_type == 5:
+        # Copy meme song to bgm
+        if not meme_copied:
+            shutil.copy(f"{current_dir}/kh1/music360.bgm", f"{current_dir}/bgm/music360.bgm")
+            music_list.append(360)
+            shutil.copy(f"{current_dir}/kh1/wave0360.wd", f"{current_dir}/bgm/wave0360.wd")
+            wd_list.append("wave0360.wd")
+            meme_copied = True
         # Replace EVERY TRACK IN THE GAME with Traverse Town
         new = 0x168
+    elif goa_type == 6:
+        # Copy meme song to bgm
+        if not meme_copied:
+            shutil.copy(f"{current_dir}/ffx/music642.bgm", f"{current_dir}/bgm/music642.bgm")
+            music_list.append(642)
+            shutil.copy(f"{current_dir}/ffx/wave0642.wd", f"{current_dir}/bgm/wave0642.wd")
+            wd_list.append("wave0642.wd")
+            meme_copied = True
+        # Replace EVERY TRACK IN THE GAME with In Zanarkand
+        new = 0x282
     elif old in to_be_replaced:
         # Set the fight track to be a copy of the corresponding new field track
         field_old = fight[old]
@@ -220,7 +297,7 @@ for i in range(0x64, 0x5865, 0x40):
             continue
         # If DARKNESS, replace every fight occurrence with the field except the Final Fight
         # If Relaxed Mermaid, DARKNESS - KH1 Edition or Traverse Town, always replace
-        elif (goa_type == 3 and x in fight and x != 0x3E) or (goa_type in range(4, 7) and x in fight) or \
+        elif (goa_type == 2 and x in fight and x != 0x3E) or (goa_type in range(3, 10) and x in fight) or \
                 (x in to_be_replaced):
             data[i + j] = fight[x]
 f = open(f"{current_dir}/arif.bin", 'wb')
