@@ -182,9 +182,9 @@ while True:
     print("Input not valid.\n")
 
 # Create bgm folder
-if os.path.exists("bgm"):
-    shutil.rmtree("bgm")
-os.makedirs("bgm")
+if os.path.exists(f"{current_dir}/bgm"):
+    shutil.rmtree(f"{current_dir}/bgm")
+os.makedirs(f"{current_dir}/bgm")
 
 # Copy all KH2 songs
 copy_all_files(f"{current_dir}/kh2", f"{current_dir}/bgm")
@@ -237,7 +237,6 @@ for i in range(len(music_list)):
         # Copy meme song to bgm
         if not meme_copied:
             shutil.copy(f"{current_dir}/kh1/music387.bgm", f"{current_dir}/bgm/music387.bgm")
-            music_list.append(387)
             shutil.copy(f"{current_dir}/kh1/wave0387.wd", f"{current_dir}/bgm/wave0387.wd")
             wd_list.append("wave0387.wd")
             meme_copied = True
@@ -250,7 +249,6 @@ for i in range(len(music_list)):
         # Copy meme song to bgm
         if not meme_copied:
             shutil.copy(f"{current_dir}/kh1/music360.bgm", f"{current_dir}/bgm/music360.bgm")
-            music_list.append(360)
             shutil.copy(f"{current_dir}/kh1/wave0360.wd", f"{current_dir}/bgm/wave0360.wd")
             wd_list.append("wave0360.wd")
             meme_copied = True
@@ -260,7 +258,6 @@ for i in range(len(music_list)):
         # Copy meme song to bgm
         if not meme_copied:
             shutil.copy(f"{current_dir}/ffx/music642.bgm", f"{current_dir}/bgm/music642.bgm")
-            music_list.append(642)
             shutil.copy(f"{current_dir}/ffx/wave0642.wd", f"{current_dir}/bgm/wave0642.wd")
             wd_list.append("wave0642.wd")
             meme_copied = True
@@ -296,7 +293,7 @@ for i in range(0x64, 0x5865, 0x40):
         if x == 0:
             continue
         # If DARKNESS, replace every fight occurrence with the field except the Final Fight
-        # If Relaxed Mermaid, DARKNESS - KH1 Edition or Traverse Town, always replace
+        # If other memes, always replace
         elif (goa_type == 2 and x in fight and x != 0x3E) or (goa_type in range(3, 10) and x in fight) or \
                 (x in to_be_replaced):
             data[i + j] = fight[x]

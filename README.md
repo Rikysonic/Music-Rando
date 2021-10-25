@@ -9,3 +9,7 @@ A mod for the OpenKH Mod Manager that randomizes the KH2 Music. It supports KH2,
 * Run `Randomize.exe`
 * Select the desired option (for new rando, it will ask you what game you want to include)
 * Your music are now randomized!
+
+## Credits
+* Num for the original repo
+* Necrofitz for working on FFX music and helping a lot on brainstorming and testing critical music combinations
