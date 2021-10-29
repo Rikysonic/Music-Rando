@@ -14,14 +14,19 @@ meme_copied = False
 
 
 def roll_seed():
-    global to_be_replaced, random_list
+    global to_be_replaced, random_list, music_list
     # Shuffle tracks
     random_list = music_list.copy()
     random.shuffle(random_list)
     # Ensure Field & Fight tracks are grouped together
     to_be_replaced = []  # Fields to be deleted in arif
-    # Exit here if DARKNESS, DARKNESS - KH1 Edition, Relaxed Mermaid, Traverse Town, or In Zanarkand is selected
+    # If meme, add EVERY KH2 SONG to the pool and exit here
     if goa_type in range(2, 7):
+        files = glob(f"{current_dir}/../../../data/bgm/*.bgm")
+        music_list = []
+        for file in files:
+            file = os.path.basename(file)
+            music_list.append(int(file[5:8]))
         return True
     for fight_old in fight:
         field_old = fight[fight_old]
@@ -42,9 +47,12 @@ def roll_seed():
             index_paired = random_list.index(paired)
             random_list[index_field], random_list[index_paired] = paired, field_new
         else:
+            # STT is out of the pool for now, so I only check for 0x35 (TT) and not 0x77 (STT)
             # Due to how GoA PNACH forces music, TT/STT cannot have an event track
-            if fight_old in [0x35, 0x77]:  # Re-roll seed if trying to set single track to TT/STT
-                print("TT/STT is a single track! Rolling new seed...")
+            # if fight_old in [0x35, 0x77]:  # Re-roll seed if trying to set single track to TT/STT
+            if fight_old == 0x35:  # Re-roll seed if trying to set single track to TT
+                # print("TT/STT is a single track! Rolling new seed...")
+                print("TT is a single track! Rolling new seed...")
                 return False
             # Check if fight_new is one of the problematic tracks
             if fight_new in problematic_tracks:
@@ -99,7 +107,8 @@ field = {
     0x64: 0x66,  # The Underworld & What Lies Beneath
     0x65: 0x68,  # Waltz of the Damned & Dance of the Daring
     0x74: 0x70,  # The Home of Dragons & Fields of Honor
-    0x76: 0x77,  # Lazy Afternoons & Sinister Sundowns
+    # Removed STT due to VSB incompatibility issues (it only works properly in STT)
+    # 0x76: 0x77,  # Lazy Afternoons & Sinister Sundowns
     # 0x7A: 0x7B,  # Let's Sing and Dance! I & Let's Sing and Dance! II
     0x7F: 0x80,  # A Day in Agrabah & Arabian Dream
     0x85: 0x86,  # Magical Mystery & Working Together
@@ -227,6 +236,9 @@ mods/Rikysonic/Music-Rando to generate a new rando.
 f.write('assets:\n')
 for i in range(len(music_list)):
     old = music_list[i]
+    # Stop when all KH2 songs have been assigned
+    if old > 299:
+        break
     if goa_type == 2:
         # Replace EVERY TRACK IN THE GAME with DARKNESS OF THE UNKNOWN I except DARKNESS OF THE UNKNOWN III
         if old == 0x3E:
