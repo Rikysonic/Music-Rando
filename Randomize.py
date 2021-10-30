@@ -69,6 +69,16 @@ def roll_seed():
         if new in problematic_tracks:
             print(f"[GoA Mod custom music] Problematic track found! -> {new}, rolling new seed...")
             return False
+    # Verify that every KH2 track is randomized
+    for old in music_list:
+        # Only check KH2 tracks
+        if old > 299:
+            break
+        index_old = music_list.index(old)
+        new = random_list[index_old]
+        if old == new:
+            print(f"The track number {old} wasn't randomized, rolling new seed...")
+            return False
     return True
 
 
