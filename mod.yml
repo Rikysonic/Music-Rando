@@ -6,4 +6,4 @@ assets:
 - name: bgm/music050.bgm
   method: copy
   source:
-  - name: "\n\n-------------------------------------------------------------------------------\n\nPlease run Randomize.exe in openkh/mods/Rikysonic/Music-Rando to generate a new rando\n\n-------------------------------------------------------------------------------\n\n"
+  - name: "\n\n-------------------------------------------------------------------------------\n\nPlease run Randomize.exe in openkh/mods/kh2/Rikysonic/Music-Rando to generate a new rando\n\n-------------------------------------------------------------------------------\n\n"

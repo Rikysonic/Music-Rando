@@ -3,6 +3,7 @@ import random
 import shutil
 import sys
 from glob import glob
+from time import sleep
 
 goa_type = 1  # Represents the GoA type, 1 for a new rando, 2 to 6 for meme-y runs
 to_be_replaced = []
@@ -15,45 +16,53 @@ meme_copied = False
 
 def roll_seed():
     global to_be_replaced, random_list, music_list
-    # Shuffle tracks
-    random_list = music_list.copy()
-    random.shuffle(random_list)
+    if goa_type != 7: # If goa_type is 7, we already have our customized random_list, we should not shuffle it again
+        # Shuffle tracks
+        random_list = music_list.copy()
+        random.shuffle(random_list)
     # Ensure Field & Fight tracks are grouped together
     to_be_replaced = []  # Fields to be deleted in arif
-    # If meme, add EVERY KH2 SONG to the pool and exit here
-    if goa_type in range(2, 7):
-        files = glob(f"{current_dir}/../../../data/bgm/*.bgm")
-        music_list = []
-        for file in files:
-            file = os.path.basename(file)
-            music_list.append(int(file[5:8]))
-        return True
     for fight_old in fight:
+        # If fight_old is not in music_list, it means that that world pair is excluded from rando
+        # (the bgm files were removed from the corresponding folder), we should skip this iteration entirely.
+        # We still keep the field/fight pair in the list to correctly manage arif hack in case of meme option
+        if fight_old not in music_list:
+            continue
+
         field_old = fight[fight_old]
         index_field = music_list.index(field_old)
         index_fight = music_list.index(fight_old)
         field_new = random_list[index_field]
         fight_new = random_list[index_fight]
+
         paired = False
-        # Find out where the pair is located
-        try:
-            paired = field[fight_new]
-        except:
+        # If it's "Wait... is this a boss fight?" meme option, there's no "pair" because the pool is not a simple
+        # permutation and has lots of repetitions - we should only perform the usual checks (not a problematic track
+        # and set it as new field track - it will be copied as new fight track right before arif hack)
+        if goa_type != 7:
+            # Find out where the pair is located
             try:
-                paired = fight[fight_new]
+                paired = field[fight_new]
             except:
-                pass
+                try:
+                    paired = fight[fight_new]
+                except:
+                    pass
         if paired:  # Swap the field with the pair tracks
             index_paired = random_list.index(paired)
             random_list[index_field], random_list[index_paired] = paired, field_new
         else:
+            # THIS COMMENTED BLOCK BELOW SEEMS TO BE UNNECESSARY IN "GOA ROM EDITION"
+            # ---------------------------------------------------------------------------------------
             # STT is out of the pool for now, so I only check for 0x35 (TT) and not 0x77 (STT)
             # Due to how GoA PNACH forces music, TT/STT cannot have an event track
             # if fight_old in [0x35, 0x77]:  # Re-roll seed if trying to set single track to TT/STT
-            if fight_old == 0x35:  # Re-roll seed if trying to set single track to TT
-                # print("TT/STT is a single track! Rolling new seed...")
-                print("TT is a single track! Rolling new seed...")
-                return False
+            # if fight_old == 0x35:  # Re-roll seed if trying to set single track to TT
+            #     # print("TT/STT is a single track! Rolling new seed...")
+            #     print("TT is a single track! Rolling new seed...")
+            #     return False
+            # ---------------------------------------------------------------------------------------
+
             # Check if fight_new is one of the problematic tracks
             if fight_new in problematic_tracks:
                 print(f"[World music] Problematic track found! -> {fight_new}, rolling new seed...")
@@ -117,9 +126,8 @@ field = {
     0x64: 0x66,  # The Underworld & What Lies Beneath
     0x65: 0x68,  # Waltz of the Damned & Dance of the Daring
     0x74: 0x70,  # The Home of Dragons & Fields of Honor
-    # Removed STT due to VSB incompatibility issues (it only works properly in STT)
-    # 0x76: 0x77,  # Lazy Afternoons & Sinister Sundowns
-    # 0x7A: 0x7B,  # Let's Sing and Dance! I & Let's Sing and Dance! II
+    0x76: 0x77,  # Lazy Afternoons & Sinister Sundowns
+    0x7A: 0x7B,  # Let's Sing and Dance! I & Let's Sing and Dance! II
     0x7F: 0x80,  # A Day in Agrabah & Arabian Dream
     0x85: 0x86,  # Magical Mystery & Working Together
     0x87: 0x88,  # Space Paranoids & Byte Bashing
@@ -157,8 +165,8 @@ problematic_tracks = [
     0x1C5,  # Night On Bald Mountain
     # 0x163,  # Disappeared (removed from bgm folder)
     0x1B9,  # Forze Del Male
-    0x161,  # Disappeared (No Intro)
-    0x1C2,  # Guardando Nel Buio (No Intro)
+    # 0x161,  # Disappeared (No Intro) (removed from bgm folder)
+    # 0x1C2,  # Guardando Nel Buio (No Intro) (removed from bgm folder)
     # FFX Songs
     0x2B5,  # Assault
     0x232,  # Decisive Battle
@@ -183,7 +191,8 @@ print("3) DARKNESS MODE - KH1 Edition")
 print("4) Relaxed Mermaid Mode")
 print("5) I Love Traverse Town!")
 print("6) In Zanarkand Everywhere You Go")
-print("7) Exit\n")
+print("7) Wait... is this a boss fight?")
+print("8) Exit\n")
 while True:
     try:
         goa_type = int(input("Input number: "))
@@ -193,8 +202,13 @@ while True:
             kh1_mode = yes_no("Do you want KH1 songs in the rando?")
             ffx_mode = yes_no("Do you want FFX songs in the rando?")
             break
-        elif goa_type == 7:
-            print("Exited!")
+        if goa_type == 7:
+            # Adding KH1 songs to bgm folder, because some of them are inside both boss-fight and silly tracklists
+            kh1_mode = True
+            break
+        if goa_type == 8:
+            print("\nOk! Bye!")
+            sleep(2)
             sys.exit(0)
     except ValueError:
         pass
@@ -218,11 +232,17 @@ if kh1_mode:
 if ffx_mode:
     copy_all_files(f"{current_dir}/ffx", f"{current_dir}/bgm")
 
-files = glob(f"{current_dir}/bgm/*.bgm")
 music_list = []
-for file in files:
-    file = os.path.basename(file)
-    music_list.append(int(file[5:8]))
+
+# If meme, add EVERY KH2 SONG to the pool
+if goa_type in range(2, 8):
+    with open(f"{current_dir}/kh2-bgm-list.txt", "r") as f:
+        music_list = [int(line.strip()) for line in f]
+else:
+    files = glob(f"{current_dir}/bgm/*.bgm")
+    for file in files:
+        file = os.path.basename(file)
+        music_list.append(int(file[5:8]))
 
 # Get all the wd files in bgm
 files = glob(f"{current_dir}/bgm/*.wd")
@@ -231,7 +251,31 @@ for file in files:
     wd_list.append(os.path.basename(file))
 
 valid = False
+
+# If meme except for "Wait... is this a boss fight?", don't roll a seed
+if goa_type in range(2, 7):
+    valid = True
+
 while not valid:
+    # For the "Wait... is this a boss fight?" meme option, we need to create a custom random_list with following rules:
+    # - All boss fight songs must become one of the silly songs
+    # - All other songs must become one of the boss fight songs
+    # - Roxas boss fight song is forced to Roxas theme
+    if goa_type == 7:
+        with open(f"{current_dir}/boss-music.txt", "r") as f:
+            boss_music_list = [int(line.strip()) for line in f]
+        with open(f"{current_dir}/silly-music.txt", "r") as f:
+            silly_music_list = [int(line.strip()) for line in f]
+        random_list = []
+        for song in music_list:
+            random_song = 0
+            if song == 0x42:
+                random_song = 0x92
+            elif song in boss_music_list:
+                random_song = random.choice(silly_music_list)
+            else:
+                random_song = random.choice(boss_music_list)
+            random_list.append(random_song)
     valid = roll_seed()
 
 # Write the mod.yml
@@ -251,10 +295,7 @@ for i in range(len(music_list)):
         break
     if goa_type == 2:
         # Replace EVERY TRACK IN THE GAME with DARKNESS OF THE UNKNOWN I except DARKNESS OF THE UNKNOWN III
-        if old == 0x3E:
-            new = 0x3E
-        else:
-            new = 0x3C
+        new = 0x3E if old == 0x3E else 0x3C
     elif goa_type == 3:
         # Copy meme song to bgm
         if not meme_copied:
@@ -323,3 +364,5 @@ f = open(f"{current_dir}/arif.bin", 'wb')
 f.write(data)
 f.close()
 print("\nFinished! Enjoy your randomized music!")
+print("\nBye!", end="")
+sleep(2)
