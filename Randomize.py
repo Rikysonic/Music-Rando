@@ -94,7 +94,7 @@ def roll_seed():
 def yes_no(question):
     while True:
         try:
-            answer = input(f"{question} [y/n]: ")
+            answer = input(f"{question} [y/n]: ").lower()
             if answer == "y" or answer == "yes":
                 return True
             elif answer == "n" or answer == "no":
@@ -285,7 +285,7 @@ originalAuthor: Rikysonic (original repo by Num), big thanks to Necrofitz for wo
  brainstorming and testing critical music combinations
 game: kh2
 description: A Music Randomizer for KH2. It supports KH2, KH1 and FFX music. Make sure to run Randomizer.exe in openkh/\
-mods/Rikysonic/Music-Rando to generate a new rando.
+mods/kh2/Rikysonic/Music-Rando to generate a new rando.
 ''')
 f.write('assets:\n')
 for i in range(len(music_list)):
