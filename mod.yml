@@ -1,7 +1,7 @@
 title: Music-Rando (now with KH1 and FFX music!)
-originalAuthor: Rikysonic (original repo by Num), big thanks to Necrofitz for working on FFX music and helping a lot on brainstorming and testing critical music combinations. Thanks to CoreySG9 for the beautiful idea of soundfont rando.
+originalAuthor: Rikysonic (original repo by Num)
 game: kh2
-description: A Music Randomizer for KH2. It supports KH2, KH1 and FFX music. Make sure to run Randomizer.exe in openkh/mods/kh2/Rikysonic/Music-Rando to generate a new rando.
+description: A Music Randomizer for KH2 (original work by Num). It supports KH2, KH1 and FFX music. Make sure to run Randomizer.exe in openkh/mods/kh2/Rikysonic/Music-Rando to generate a new rando. Big thanks to Necrofitz for working on FFX music and helping a lot on brainstorming and testing critical music combinations. Thanks to CoreySG9 for his beautiful idea of soundfont rando.
 assets:
 - name: bgm/music050.bgm
   method: copy
