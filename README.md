@@ -27,4 +27,4 @@ A mod for the OpenKH Mod Manager that randomizes the KH2 Music. It supports KH2,
 ## Credits
 * Num for the original repo
 * Necrofitz for working on FFX music and helping a lot on brainstorming and testing critical music combinations
-* [CoreySG9](https://www.youtube.com/@coreysg9) for the beautiful idea of soundfont rando (subscribe to his fantastic YT channel!!!)
+* [CoreySG9](https://www.youtube.com/@coreysg9) for the beautiful idea of soundfonts rando (subscribe to his fantastic YT channel!!!)

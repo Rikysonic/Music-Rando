@@ -279,9 +279,10 @@ while True:
         if goa_type == 1:
             # Set the rando type
             print("\nSelect the desired option:")
-            print("1) Randomized music, vanilla soundfont")
-            print("2) Vanilla music, randomized soundfont")
-            print("3) Randomized music, randomized soundfont\n")
+            print("1) Randomized music, vanilla soundfonts")
+            print("2) Vanilla music, randomized soundfonts")
+            print("3) Randomized music, randomized soundfonts\n")
+            descr = "songs"
             while True:
                 try:
                     rando_type = int(input("Input number: "))
@@ -292,16 +293,18 @@ while True:
                     if rando_type == 2:
                         rando_bgm = False
                         rando_wd = True
+                        descr = "soundfonts"
                         break
                     if rando_type == 3:
                         rando_bgm = True
                         rando_wd = True
+                        descr = "songs and soundfonts"
                         break
                 except ValueError:
                     pass
                 print("Input not valid.\n")
-            kh1_mode = yes_no("Do you want KH1 songs in the rando?")
-            ffx_mode = yes_no("Do you want FFX songs in the rando?")
+            kh1_mode = yes_no(f"Do you want KH1 {descr} in the rando?")
+            ffx_mode = yes_no(f"Do you want FFX {descr} in the rando?")
             break
         if goa_type == 7:
             # Adding KH1 songs to bgm folder, because some of them are inside both boss-fight and silly tracklists
@@ -406,7 +409,7 @@ game: kh2
 description: A Music Randomizer for KH2 (original work by Num). It supports KH2, KH1 and FFX music.\
  Make sure to run Randomizer.exe in openkh/mods/kh2/Rikysonic/Music-Rando to generate a new rando.\
  Big thanks to Necrofitz for working on FFX music and helping a lot on brainstorming and testing critical\
- music combinations. Thanks to CoreySG9 for his beautiful idea of soundfont rando.
+ music combinations. Thanks to CoreySG9 for his beautiful idea of soundfonts rando.
 ''')
 mod.write('assets:\n')
 
